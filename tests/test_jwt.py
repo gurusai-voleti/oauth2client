@@ -226,14 +226,6 @@ class CryptTests(unittest.TestCase):
         self.assertIsInstance(verifier, self.verifier)
 
 
-class PEMCryptTestsPyCrypto(CryptTests):
-
-    def setUp(self):
-        self.format_ = 'pem'
-        self.signer = crypt.PyCryptoSigner
-        self.verifier = crypt.PyCryptoVerifier
-
-
 class PEMCryptTestsOpenSSL(CryptTests):
 
     def setUp(self):
@@ -333,19 +325,6 @@ class PEMSignedJwtAssertionCredentialsOpenSSLTests(
 
     def tearDown(self):
         crypt.Signer = self.orig_signer
-
-
-class PEMSignedJwtAssertionCredentialsPyCryptoTests(
-        SignedJwtAssertionCredentialsTests):
-
-    def setUp(self):
-        self.orig_signer = crypt.Signer
-        self.format_ = 'pem'
-        crypt.Signer = crypt.PyCryptoSigner
-
-    def tearDown(self):
-        crypt.Signer = self.orig_signer
-
 
 class TestHasOpenSSLFlag(unittest.TestCase):
 

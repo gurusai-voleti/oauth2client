@@ -238,9 +238,6 @@ class ServiceAccountCredentialsTests(unittest.TestCase):
             service_account.ServiceAccountCredentials.from_p12_keyfile(
                 service_account_email, filename)
 
-    @mock.patch('oauth2client.crypt.Signer', new=crypt.PyCryptoSigner)
-    def test_from_p12_keyfile_with_pycrypto(self):
-        self._p12_not_implemented_helper()
 
     @mock.patch('oauth2client.crypt.Signer', new=crypt.RsaSigner)
     def test_from_p12_keyfile_with_rsa(self):
@@ -601,7 +598,7 @@ class JWTAccessCredentialsTests(unittest.TestCase):
         utcnow.return_value = T3_DATE
         transport.request(http, self.url)
         token_2 = self.jwt.access_token
-        self.assertEquals(self.jwt.token_expiry, T3_EXPIRY_DATE)
+        self.assertEqual(self.jwt.token_expiry, T3_EXPIRY_DATE)
         self.assertNotEqual(token_1, token_2)
 
         # Verify mocks.
@@ -645,7 +642,7 @@ class JWTAccessCredentialsTests(unittest.TestCase):
 
         utcnow.return_value = T2_DATE
         response, _ = transport.request(http, self.url)
-        self.assertEquals(response.status, http_client.OK)
+        self.assertEqual(response.status, http_client.OK)
         token_2 = self.jwt.access_token
         # Check the 401 forced a new token
         self.assertNotEqual(token_1, token_2)
@@ -684,5 +681,5 @@ class JWTAccessCredentialsTests(unittest.TestCase):
         utcnow.return_value = T2_DATE
         self.jwt.refresh(None)
         token_2 = self.jwt.access_token
-        self.assertEquals(self.jwt.token_expiry, T2_EXPIRY_DATE)
+        self.assertEqual(self.jwt.token_expiry, T2_EXPIRY_DATE)
         self.assertNotEqual(token_1, token_2)
